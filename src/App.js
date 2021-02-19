@@ -10,50 +10,22 @@
 // rsc를 치면 프로젝트 기본모양 생성
 
 import React, {useState} from 'react';
+import axios from "axios";
 
 const App = () => {
     //상태값 선언
-    const [count, setCount] = useState(
-        [
-            {
-                title: "Matrix",
-                poster: "https://images-na.ssl-images-amazon.com/images/M/MV5BNzQzOTk3OTAtNDQ0Zi00ZTVkLWI0MTEtMDllZjNkYzNjNTc4L2ltYWdlXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_UY1200_CR84,0,630,1200_AL_.jpg"
-            },
-            {
-                title: "Full Metal Jacket",
-                poster: "https://upload.wikimedia.org/wikipedia/en/9/99/Full_Metal_Jacket_poster.jpg"
-            },
-            {
-                title: "Oldboy",
-                poster: "https://upload.wikimedia.org/wikipedia/en/b/bb/Oldboy_2013_film_poster.jpg"
-            },
-            {
-                title: "Star Wars",
-                poster: "https://i.pinimg.com/736x/a1/61/c7/a161c7034917936f8bd53ca65bc6f0d0--star-wars-stuff-art-illustrations.jpg"
-            }
-        ]
-    )
+    const [count, setCount] = useState([])
 
     //함수 선언
-    const change = () => {
-        setCount([
-            {
-                title: "M",
-                poster: "https://images-na.ssl-images-amazon.com/images/M/MV5BNzQzOTk3OTAtNDQ0Zi00ZTVkLWI0MTEtMDllZjNkYzNjNTc4L2ltYWdlXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_UY1200_CR84,0,630,1200_AL_.jpg"
-            },
-            {
-                title: "F",
-                poster: "https://upload.wikimedia.org/wikipedia/en/9/99/Full_Metal_Jacket_poster.jpg"
-            },
-            {
-                title: "O",
-                poster: "https://upload.wikimedia.org/wikipedia/en/b/bb/Oldboy_2013_film_poster.jpg"
-            },
-            {
-                title: "S",
-                poster: "https://i.pinimg.com/736x/a1/61/c7/a161c7034917936f8bd53ca65bc6f0d0--star-wars-stuff-art-illustrations.jpg"
-            }
-        ])
+    const getdata = async () => {
+
+        // 네트워킹을 하고, 데이터를 받아서 count에 담겠다.
+        axios
+            .get("https://api.themoviedb.org/3/movie/popular?api_key=8597e491ed6e80f0de12e349eb60ea6e&language=en-US&page=1")
+            // .then(res => console.log(">>>>>>>>>>>>>>>>", res.data.results))
+            .then(res => setCount(res.data.results))
+            .catch(err => console.log(err));
+
     }
     //변수 선언
 
@@ -63,10 +35,11 @@ const App = () => {
         {count.map(movie => (
             <>
                 <h1>{movie.title}</h1>
-                <img src={movie.poster} />
+                <h2>{movie.release_date}</h2>
+                <h3>{movie.popularity}</h3>
             </>
         ))}
-        <button type="button" onClick={change}> click me </button>
+        <button type="button" onClick={getdata}> click me </button>
       </div>
   );
 
